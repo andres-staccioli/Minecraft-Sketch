@@ -1,0 +1,364 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: #111;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    overflow: hidden;
+}
+
+header {
+    display: flex;
+}
+
+nav {
+    height: 55px;
+    width: 1035px;
+    padding-left: 15px;
+}
+
+nav, nav ul {
+    display: flex;
+    background: #000;
+}
+
+nav ul li {
+    margin-top: 5px;
+    padding: 15px;
+    list-style-type: none;
+    width: 175px;                 /* width originale con Demo incluso 145px */
+    text-align: center;
+}
+
+nav ul li:hover {
+    background: #111;
+}
+
+nav div {
+    width: 300px;
+    margin-right: 15px;
+}
+
+#logo {
+    width: 100%;
+    height: 45px;
+    object-fit: scale-down;
+    margin-top: 5px;
+}
+
+a {
+    color: white;
+    text-decoration: none;
+}
+
+nav i {
+    margin-right: 5px;
+}
+
+#app {
+    display: flex;
+    margin-top: 10px;
+    width: 100%;
+}
+
+#left-menu {
+    width: 155px;
+    height: 490px;
+    background: #000;
+    margin-right: 10px;
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    font-size: 13px;
+    padding: 10px;
+    list-style-type: none;
+}
+
+button {
+    text-align: left;
+    background-color: #1e3c1e;
+    padding: 0px 10px;
+    border: none;
+    line-height: 35px;
+    border-radius: 10px;
+    border: 1px solid black;
+    font-size: 13px;
+    height: 38px;
+}
+
+input {
+    position: absolute;
+    background-color: #14281400;
+    border: none;
+    float: right;
+    /* justify-content: center; */
+    margin-right: -3px;
+    top: -6px;
+}
+
+#colore_blocco {
+    width: 22px;
+    height: 27px;
+    position: absolute;
+    justify-content: center;
+    left: -2px;
+    margin-top: 2px;
+}
+
+#colore_matita {
+    position: relative;
+    float: right;
+    width: 22px;
+    height: 24px;
+    margin-top: 11px;
+}
+
+button:hover {
+    background-color: #2b552b;
+}
+
+button:focus {
+    border: 1px solid white;
+    outline: 0px;
+}
+
+button:active, button:active i, button:active .lm_testo {
+    background-color: #958719;
+    color: black;
+}
+
+#btn_vuoto, #btn_agent, #btn_matita, #btn_salva {
+    margin-top: 8px;
+}
+
+#blocchi, #disegno {
+    background-color: #1e3c1e;
+    color: white;
+    border-radius: 15px;
+    border: 1px solid black;
+}
+
+#blocchi button, #disegno button {
+    margin: -1px;
+    width: 35px;
+    color: #CCC;
+    text-align: center;
+}
+
+.lm_icona {
+    /* width: 40px;
+    height: 40px; */
+    padding: 2px 9px;
+    /* background-color: deeppink; */
+    border: 2px solid black;
+}
+
+#pencil_img {
+    width: 10px;
+}
+
+#inizio_img, #eraser_img {
+    width: 12px;
+}
+
+#delete-blocchi, #delete-disegno {
+    float: right;
+}
+
+#vuoto {
+    background-color: #1e3c1e;
+    border: 2px solid #091109;
+}
+
+#progettato {
+    background-color: #1e3c1e;
+    border: 2px solid #c8b420;
+}
+
+#piazzato {
+    background-color: #86592d;
+    border: 2px solid #604020;
+}
+
+#altro {
+    background-color: #7f7f7f;
+    border: 2px solid #505050;
+    position: relative;
+}
+
+#attenzione {
+    background-color: #960000;
+    border: 2px solid #640000;
+}
+
+#agent {
+    position: relative;
+    background-color: #0000;
+    border: none;
+    width: 20px;
+    height: 20px;
+    padding: 0;
+}
+
+#agent img {
+    width: 23px;
+    position: relative;
+    top: 3px;
+}
+
+#matita {
+    position: relative;
+    background-color: #0064ff;
+    border: 2px solid #005ae2;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    background-image: url("pencil.png");
+    background-repeat: no-repeat;
+    background-size: 70%;
+    background-position: center;
+}
+
+#timbri button {
+    /* text-align: center;
+    justify-content: center; */
+    padding:0;
+}
+
+#btn_inizio, #btn_fine, #btn_numeri {
+    display: inline-block;
+    width: 33%;
+    font-size: 22px;
+    text-align: center;
+}
+
+#btn_inizio img, #btn_fine img {
+    height: 22px;
+    padding: 0;
+    margin-bottom: -4px;
+    line-height: 35px;
+    margin-left: auto;
+    margin-right: auto;
+    /* color: #00b300;
+    font-size: 20px;
+    text-shadow: -2px 0 #000, 0 2px #000, 2px 0 #000, 0 -2px #000; */
+}
+
+
+
+#btn_fine{
+    color: #e62e00;
+}
+
+#btn_numeri{
+    color: #CCC; 
+}
+
+#gomma {
+    background-image: url("alpha.png");
+    /* background-repeat: no-repeat; */
+    background-size: cover;
+    /* background-position: center; */
+    width: 25px;
+    height: 25px;
+    padding: 2px 4px;
+    border-radius: 50%;
+    border: 2px solid #555;
+}
+
+#gomma img {
+    /* width: 15px; */
+    object-fit: cover;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#salva {
+    width: 25px;
+    height: 25px;
+    padding: 2px 4px;
+    background-color: #2ff592;
+}
+
+.lm_testo {
+    margin-left: 8px;
+    margin-top: 2px;
+    /* line-height: 30px; */
+    text-align: left;
+    color: #DDD
+}
+
+footer {
+    background: #000;
+    color: #777;
+    font-size: 14px;
+    padding: 15px;
+    margin-top: 10px;
+    width: 1035px;
+}
+
+#canvas {
+    padding: 5px;
+    padding-bottom: 0px;
+    background: rgb(20, 40, 20);
+    /* cursor: url('cursors/arrow_1.cur'), auto; */
+}
+
+#aiuto-info, #contatto-info{
+    width: 860px;
+    padding-left: 25px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    height: 490px;
+    overflow: auto;
+    /* background-color: rgb(20, 40, 20); */
+    background-color: #142814;
+  background-image: linear-gradient(45deg, #122612 25%, transparent 25%, transparent 75%, #122612 75%), linear-gradient(45deg, #122612 25%, transparent 25%, transparent 75%, #122612 75%);
+  background-size: 10px 10px;
+  background-position: 0 0, 25px 25px;}
+
+h2, h3, p{
+    color: white;
+    margin-bottom: 5px;
+}
+
+h2 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 35px;
+    line-height: 25px;
+}
+
+h3{
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-left: 10px;
+    line-height: 20px;
+}
+
+p{
+    font-size: 14px;
+    margin-left: 20px;
+    line-height: 16px;
+}
+
+.intro{
+    margin:0;
+    font-size: 16px;
+    line-height: 25px;
+}
+
+.generale{
+    margin:0;
+    font-size: 16px;
+}
+
+#contatto{
+    margin-top: 0;
+}

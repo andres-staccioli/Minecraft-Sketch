@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Minecraft Sketch (v0.2)</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css" integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script></head>
+<body>
+    <header>
+        <nav>
+            <div><img src="minecraft-sketch.png" alt="Logo Minecraft Sketch" id="logo"></div>
+            <ul>
+                <a href="/"><li>
+                    <i class="fas fa-edit"></i>Sketch
+                </li></a>
+                <!-- <a href="#"><li>
+                    <i class="fas fa-play-circle"></i>Demo
+                </li></a> -->
+                <a href="aiuto.html"><li>
+                    <i class="fas fa-question-circle"></i>Aiuto
+                </li></a>
+                <a href="contatto.html"><li>
+                    <i class="fas fa-paper-plane"></i>Contatto
+                </li></a>
+                <a href="https://minecraft.makecode.com/" target="_blank"><li>
+                    <i class="fas fa-code"></i>MakeCode
+                </li></a>
+            </ul>
+        </nav>
+    </header>
+    <div id="app">
+        <div id="left-menu">
+                <li id="blocchi"><button id="show-blocchi" title="Vista Blocchi"><i class="fas fa-eye"></i></button><span class="lm_testo">Blocchi</span><button id="delete-blocchi" title="Cancellare Blocchi"><i class="fas fa-trash-alt"></i></button></li>
+                <li id="disegno"><button id="show-disegno" title="Vista Disegno"><i class="fas fa-eye"></i></button><span class="lm_testo">Disegno</span><button id="delete-disegno" title="Cancellare Disegno"><i class="fas fa-trash-alt"></i></button></li>
+                <button title="Vuoto (Q)" id="btn_vuoto"><li><span class="lm_icona" id="vuoto"></span><span class="lm_testo">Vuoto</span></li></button>
+                <button title="Progettato (1)" id="btn_progettato"><li><span class="lm_icona" id="progettato"></span><span class="lm_testo">Progettato</span></li></button>
+                <button title="Piazzato (2)" id="btn_piazzato"><li><span class="lm_icona" id="piazzato"></span><span class="lm_testo">Piazzato</span></li></button>
+                <button title="Altro (3)" id="btn_altro"><li><span class="lm_icona" id="altro"><input id="colore_blocco" type="color" name="favcolor" value="#7f7f7f"></span><span class="lm_testo">Altro</span></li></button>
+                <button title="Attenzione (4)" id="btn_attenzione"><li><span class="lm_icona" id="attenzione"></span><span class="lm_testo">Attenzione</span></li></button>
+                <button title="Agent (A)" id="btn_agent"><li><span class="lm_icona" id="agent"><img src="agent.png"></span><span class="lm_testo">Agent</span></li></button>
+                <button title="Matita (E)" id="btn_matita"><li><span class="lm_icona" id="matita"></span><span class="lm_testo">Matita</span><input id="colore_matita" type="color" name="favcolor" value="#0064ff"></li></button>
+                <li id="timbri"><button id="btn_inizio" title="Timbro Inizio (I)"><img src="agent-freccia_verde.png"></button><button id="btn_fine" title="Timbro Fine (O)"><img src="agent-freccia_rosso.png"></button><button id="btn_numeri" title="Timbri Numeri (N)"><i class="fas fa-sort-numeric-up-alt"></i></button></li>
+                <button title="Gomma (R)" id="btn_gomma"><li><span class="lm_icona" id="gomma"><img src="eraser.png" id="eraser_img"></span><span class="lm_testo">Gomma</span></li></button>
+                <button title="Salva Sketch (P)" id="btn_salva"><li><span class="lm_icona" id="salva"><i class="fas fa-download"></i></span><span class="lm_testo">Salva Sketch</span></li></button>
+            </ul>
+        </div>
+        <div id="canvas"></div>
+    </div>
+
+    <footer>
+        Minecraft Sketch v0.2 - Creato da Andrés Staccioli
+    </footer>
+
+
+
+
+    <script src="script.js" async defer></script>
+</body>
+
+</html>

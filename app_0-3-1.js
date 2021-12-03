@@ -75,6 +75,12 @@ class App {
     }
 
     newScale(inputScale, isFixed) {
+        if (inputScale == scala) {
+            return;
+        }
+        if (scaleList.includes(inputScale)) {
+            document.getElementById(`scale_${inputScale}`).checked = true;
+        }
         const warning = "Cambiare la scala dei blocchi cancellerà lo sketch attuale. Procediamo?";
         // if (scaleList.includes(inputScale)) {
         if (confirm(warning)) {
@@ -89,7 +95,6 @@ class App {
                 app.newCanvas("fullsizeCanvas");
             }
         }
-        document.getElementById('scale_slider').value = scala;
         // }
     }
 

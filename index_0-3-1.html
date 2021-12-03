@@ -53,8 +53,17 @@
                     <div class="section_title_text">
                         SCALA
                     </div>
-                    <div class="section_title_buttons">
-                        <div><input type="range" min="20" max="60" value="40" title="Cambiare scala dei blocchi" id="scale_slider" step="10" onchange="app.newScale(Number(this.value), true)"></div>
+                    <div class="section_title_buttons scales">
+                        <input class="scale_input" type="radio" value="20" name="Scale" id="scale_20">
+                        <label class="scale_label" for="scale_20" onclick="app.newScale(20, true)">20</label>
+                        <input class="scale_input" type="radio" value="30" name="Scale" id="scale_30">
+                        <label class="scale_label" for="scale_30" onclick="app.newScale(30, true)">30</label>
+                        <input class="scale_input" type="radio" value="40" name="Scale" id="scale_40" checked="true">
+                        <label class="scale_label" for="scale_40" onclick="app.newScale(40, true)">40</label>
+                        <input class="scale_input" type="radio" value="50" name="Scale" id="scale_50">
+                        <label class="scale_label" for="scale_50" onclick="app.newScale(50, true)">50</label>
+                        <input class="scale_input" type="radio" value="60" name="Scale" id="scale_60">
+                        <label class="scale_label" for="scale_60" onclick="app.newScale(60, true)">60</label>
                     </div>
                 </div>
             </div>

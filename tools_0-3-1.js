@@ -435,13 +435,18 @@ const MODI = {
                                     app.boom();
                                 } else if (this.textContent.length == 8 && this.textContent.substring(0, 6).toUpperCase() == "SCALA " && !isNaN(this.textContent.substring(6, 8))) {
                                     let inputScale = Number(this.textContent.substring(6, 8));
-                                    app.newScale(inputScale, true);
-                                    this.textContent = "";
+                                    if (scaleList.includes(inputScale)) {
+                                        app.newScale(inputScale, true);
+                                        this.textContent = "";
+                                    }
                                 } else if (this.textContent.length >= 8 && this.textContent.length <= 12 && this.textContent.substring(0, 5).toUpperCase() == "GRID ") {
                                     const input = this.textContent.substring(5, this.textContent.length).split(' ');
-                                    const newWidth = Number(input[0]);
-                                    const newHeight = Number(input[1]);
+                                    const newWidth = Math.floor(Number(input[0]));
+                                    const newHeight = Math.floor(Number(input[1]));
                                     if (!isNaN(newWidth) && !isNaN(newHeight)) {
+                                        if(newWidth <= 0 || newHeight <= 0 ){
+                                            return;
+                                        }
                                         if (newWidth > minWidth / scala || newHeight > minHeight / scala) {
                                             if (newWidth > minWidth / scala && newHeight > minHeight / scala) {
                                                 app.newCanvas("blocchi", newWidth, newHeight);

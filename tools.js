@@ -1,3 +1,6 @@
+// Minecraft Sketch - Version 0.4 (03-Dec-2021) by Andrés Staccioli
+// Last Update tools.js: 03-Dec-2021
+
 const MODI = {
     BLOCCO: {
         TIPO: {
@@ -87,23 +90,72 @@ const MODI = {
             },
             AGENT: {
                 SHORTCUT: 65                    // Tasto A
+            },
+            TNT: {
+                TIPO: 'TIMBRO',
+                FILE: 'images/tnt-top.jpg',
+                DIRECTION: 0
             }
         },
         click(tool, isReleased) {
-            for (let b of blocchi) {
-                b.click();
+            const columns = width / scala;
+            const x = floor(mouseX / scala);
+            const y = floor(mouseY / scala);
+            let indexBlocco = x + columns * y;
+            if (keyIsPressed && keyCode == 16 && lastBlock) {
+                if (x == lastBlock.x) {
+                    if (y > lastBlock.y) {
+                        for (let blockY = lastBlock.y + 1; blockY <= y; blockY += 1) {
+                            indexBlocco = x + columns * blockY;
+                            blocchi[indexBlocco].click();
+                            blocchi[indexBlocco].show();
+                        }
+                    } else {
+                        for (let blockY = lastBlock.y - 1; blockY >= y; blockY -= 1) {
+                            indexBlocco = x + columns * blockY;
+                            blocchi[indexBlocco].click();
+                            blocchi[indexBlocco].show();
+                        }
+                    }
+                } else if (y == lastBlock.y) {
+                    if (x > lastBlock.x) {
+                        for (let blockX = lastBlock.x + 1; blockX <= x; blockX += 1) {
+                            indexBlocco = blockX + columns * y;
+                            blocchi[indexBlocco].click();
+                            blocchi[indexBlocco].show();
+                        }
+                    } else {
+                        for (let blockX = lastBlock.x - 1; blockX >= x; blockX -= 1) {
+                            indexBlocco = blockX + columns * y;
+                            blocchi[indexBlocco].click();
+                            blocchi[indexBlocco].show();
+                        }
+                    }
+                }
             }
+            lastBlock = {
+                index: indexBlocco,
+                x: floor(blocchi[indexBlocco].x / scala),
+                y: floor(blocchi[indexBlocco].y / scala),
+                status: blocchi[indexBlocco].status
+            }
+            blocchi[indexBlocco].click();
+            blocchi[indexBlocco].show();
         },
         mouseEffect() {
             mouseLayer.clear();
-            if (["PORTA", "LASTRA", "PIANTA", "SEMI"].includes(app.currentTool)) {
-                for (let b of blocchi) {
-                    b.mouseEffect(true);
+            if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
+                let isStamp;
+                if (["PORTA", "LASTRA", "PIANTA", "SEMI", "TNT"].includes(app.currentTool)) {
+                    isStamp = true;
+                } else {
+                    isStamp = false;
                 }
-            } else {
-                for (let b of blocchi) {
-                    b.mouseEffect();
-                }
+                const columns = width / scala;
+                const x = floor(mouseX / scala);
+                const y = floor(mouseY / scala);
+                const indexBlocco = x + columns * y;
+                blocchi[indexBlocco].mouseEffect(isStamp);
             }
         }
     },
@@ -142,13 +194,13 @@ const MODI = {
                 click(isReleased) {
                     if (isReleased) {
                         disegno.noStroke();
-                        MODI.DISEGNO.text(disegno, mouseX, mouseY, CENTER, "FF", this.numeroTimbro);
+                        MODI.DISEGNO.text(disegno, textSize, mouseX, mouseY, CENTER, "FF", this.numeroTimbro);
                         this.numeroTimbro++;
                     }
                 },
                 mouseEffect() {
                     document.addEventListener("wheel", this.wheel);
-                    MODI.DISEGNO.text(mouseLayer, mouseX, mouseY, CENTER, "BB", this.numeroTimbro);
+                    MODI.DISEGNO.text(mouseLayer, textSize, mouseX, mouseY, CENTER, "BB", this.numeroTimbro);
                 },
                 wheel(eventInfo) {
                     if (eventInfo.deltaY < 0) {
@@ -163,12 +215,12 @@ const MODI = {
                 click(isReleased) {
                     if (!this.processing) {
                         if (app.snapToBlocks) {
-                            for (let b of blocchi) {
-                                if (mouseX >= b.x && mouseX < b.x + scala && mouseY >= b.y && mouseY < b.y + scala) {
-                                    this.startingPoint = createVector(b.x + scala / 2, b.y + scala / 2);
-                                    this.endingPoint = createVector(b.x + scala / 2 - this.startingPoint.x, b.y + scala / 2 - this.startingPoint.y);
-                                }
-                            }
+                            const columns = width / scala;
+                            const x = floor(mouseX / scala);
+                            const y = floor(mouseY / scala);
+                            const indexBlocco = x + columns * y;
+                            this.startingPoint = createVector(blocchi[indexBlocco].x + scala / 2, blocchi[indexBlocco].y + scala / 2);
+                            this.endingPoint = createVector(blocchi[indexBlocco].x + scala / 2 - this.startingPoint.x, blocchi[indexBlocco].y + scala / 2 - this.startingPoint.y);
                         } else {
                             this.startingPoint = createVector(mouseX, mouseY);
                             this.endingPoint = createVector(mouseX - this.startingPoint.x, mouseY - this.startingPoint.y);
@@ -176,11 +228,11 @@ const MODI = {
                         this.processing = true;
                     } else if (isReleased && dist(this.startingPoint.x, this.startingPoint.y, mouseX, mouseY) >= scala / 1.414) {
                         if (app.snapToBlocks) {
-                            for (let b of blocchi) {
-                                if (mouseX >= b.x && mouseX < b.x + scala && mouseY >= b.y && mouseY < b.y + scala) {
-                                    this.endingPoint = createVector(b.x + scala / 2 - this.startingPoint.x, b.y + scala / 2 - this.startingPoint.y);
-                                }
-                            }
+                            const columns = width / scala;
+                            const x = floor(mouseX / scala);
+                            const y = floor(mouseY / scala);
+                            const indexBlocco = x + columns * y;
+                            this.endingPoint = createVector(blocchi[indexBlocco].x + scala / 2 - this.startingPoint.x, blocchi[indexBlocco].y + scala / 2 - this.startingPoint.y);
                         } else {
                             this.endingPoint = createVector(mouseX - this.startingPoint.x, mouseY - this.startingPoint.y);
                         }
@@ -194,12 +246,12 @@ const MODI = {
                             this.processing = false;
                         } else if (app.snapToBlocks) {
                             MODI.BLOCCO.mouseEffect();
-                            for (let b of blocchi) {
-                                if (mouseX >= b.x && mouseX < b.x + scala && mouseY >= b.y && mouseY < b.y + scala) {
-                                    this.endingPoint.x = b.x + scala / 2 - this.startingPoint.x;
-                                    this.endingPoint.y = b.y + scala / 2 - this.startingPoint.y;
-                                }
-                            }
+                            const columns = width / scala;
+                            const x = floor(mouseX / scala);
+                            const y = floor(mouseY / scala);
+                            const indexBlocco = x + columns * y;
+                            this.endingPoint.x = blocchi[indexBlocco].x + scala / 2 - this.startingPoint.x;
+                            this.endingPoint.y = blocchi[indexBlocco].y + scala / 2 - this.startingPoint.y;
                         } else {
                             this.endingPoint.x = mouseX - this.startingPoint.x;
                             this.endingPoint.y = mouseY - this.startingPoint.y;
@@ -253,12 +305,12 @@ const MODI = {
                 click(isReleased) {
                     if (!this.processing) {
                         if (app.snapToBlocks) {
-                            for (let b of blocchi) {
-                                if (mouseX >= b.x && mouseX < b.x + scala && mouseY >= b.y && mouseY < b.y + scala) {
-                                    this.startingPoint = createVector(b.x + scala / 2, b.y + scala / 2);
-                                    this.endingPoint = createVector(b.x + scala / 2 - this.startingPoint.x, b.y + scala / 2 - this.startingPoint.y);
-                                }
-                            }
+                            const columns = width / scala;
+                            const x = floor(mouseX / scala);
+                            const y = floor(mouseY / scala);
+                            const indexBlocco = x + columns * y;
+                            this.startingPoint = createVector(blocchi[indexBlocco].x + scala / 2, blocchi[indexBlocco].y + scala / 2);
+                            this.endingPoint = createVector(blocchi[indexBlocco].x + scala / 2 - this.startingPoint.x, blocchi[indexBlocco].y + scala / 2 - this.startingPoint.y);
                         } else {
                             this.startingPoint = createVector(mouseX, mouseY);
                             this.endingPoint = createVector(mouseX - this.startingPoint.x, mouseY - this.startingPoint.y);
@@ -266,11 +318,11 @@ const MODI = {
                         this.processing = true;
                     } else if (isReleased && dist(this.startingPoint.x, this.startingPoint.y, mouseX, mouseY) > scala / 2) {
                         if (app.snapToBlocks) {
-                            for (let b of blocchi) {
-                                if (mouseX >= b.x && mouseX < b.x + scala && mouseY >= b.y && mouseY < b.y + scala) {
-                                    this.endingPoint = createVector(b.x + scala / 2 - this.startingPoint.x, b.y + scala / 2 - this.startingPoint.y);
-                                }
-                            }
+                            const columns = width / scala;
+                            const x = floor(mouseX / scala);
+                            const y = floor(mouseY / scala);
+                            const indexBlocco = x + columns * y;
+                            this.endingPoint = createVector(blocchi[indexBlocco].x + scala / 2 - this.startingPoint.x, blocchi[indexBlocco].y + scala / 2 - this.startingPoint.y);
                         } else {
                             this.endingPoint = createVector(mouseX - this.startingPoint.x, mouseY - this.startingPoint.y);
                         }
@@ -284,12 +336,12 @@ const MODI = {
                             this.processing = false;
                         } else if (app.snapToBlocks) {
                             MODI.BLOCCO.mouseEffect();
-                            for (let b of blocchi) {
-                                if (mouseX >= b.x && mouseX < b.x + scala && mouseY >= b.y && mouseY < b.y + scala) {
-                                    this.endingPoint.x = b.x + scala / 2 - this.startingPoint.x;
-                                    this.endingPoint.y = b.y + scala / 2 - this.startingPoint.y;
-                                }
-                            }
+                            const columns = width / scala;
+                            const x = floor(mouseX / scala);
+                            const y = floor(mouseY / scala);
+                            const indexBlocco = x + columns * y;
+                            this.endingPoint.x = blocchi[indexBlocco].x + scala / 2 - this.startingPoint.x;
+                            this.endingPoint.y = blocchi[indexBlocco].y + scala / 2 - this.startingPoint.y;
                         } else {
                             this.endingPoint.x = mouseX - this.startingPoint.x;
                             this.endingPoint.y = mouseY - this.startingPoint.y;
@@ -378,7 +430,48 @@ const MODI = {
                                 break;
                             case 13:
                                 this.processing = false;
-                                MODI.DISEGNO.text(disegno, this.posX, this.posY, LEFT, "FF", this.textContent);
+                                if (this.textContent.toUpperCase() == "TNT") {
+                                    this.textContent = "";
+                                    app.setTool('TNT');
+                                } else if (this.textContent.toUpperCase() == "BOOM") {
+                                    this.textContent = "";
+                                    app.boom();
+                                } else if (this.textContent.length == 8 && this.textContent.substring(0, 6).toUpperCase() == "SCALA " && !isNaN(this.textContent.substring(6, 8))) {
+                                    let inputScale = Number(this.textContent.substring(6, 8));
+                                    if (scaleList.includes(inputScale)) {
+                                        app.newScale(inputScale, true);
+                                        this.textContent = "";
+                                    }
+                                } else if (this.textContent.length >= 8 && this.textContent.length <= 12 && this.textContent.substring(0, 5).toUpperCase() == "GRID ") {
+                                    const input = this.textContent.substring(5, this.textContent.length).split(' ');
+                                    const newWidth = Math.floor(Number(input[0]));
+                                    const newHeight = Math.floor(Number(input[1]));
+                                    if (!isNaN(newWidth) && !isNaN(newHeight)) {
+                                        if(newWidth <= 0 || newHeight <= 0 ){
+                                            return;
+                                        }
+                                        if (newWidth > minWidth / scala || newHeight > minHeight / scala) {
+                                            if (newWidth > minWidth / scala && newHeight > minHeight / scala) {
+                                                app.newCanvas("blocchi", newWidth, newHeight);
+                                            } else if (newWidth > minWidth / scala) {
+                                                app.newCanvas("blocchi", newWidth, minHeight / scala);
+                                            } else if (newHeight > minHeight / scala) {
+                                                app.newCanvas("blocchi", minWidth / scala, newHeight);
+                                            }
+                                        } else {
+                                            app.newCanvas("blocchi", minWidth / scala, minHeight / scala);
+                                        }
+                                        this.textContent = "";
+                                    } else if (this.textContent.toUpperCase() == "GRID FILL") {
+                                        app.newCanvas("fullsizeCanvas");
+                                        this.textContent = "";
+                                    }
+                                } else if (this.textContent.toUpperCase() == "PRINT") {
+                                    app.togglePrintMode(!printMode);
+                                    redraw();
+                                    this.textContent = "";
+                                }
+                                MODI.DISEGNO.text(disegno, textSize, this.posX, this.posY, LEFT, "FF", this.textContent);
                                 break;
                             case 8:
                                 this.textContent = this.textContent.substring(0, this.textContent.length - 1);
@@ -392,11 +485,15 @@ const MODI = {
                 },
                 mouseEffect() {
                     if (this.processing) {
-                        MODI.DISEGNO.text(mouseLayer, this.posX, this.posY, LEFT, "BB", this.textContent + "_");
+                        MODI.DISEGNO.text(mouseLayer, textSize, this.posX, this.posY, LEFT, "BB", this.textContent + "_");
+                        if (this.textContent.substring(0, 6).toUpperCase() == "SCALA ") {
+                            MODI.DISEGNO.text(mouseLayer, textSize * 0.75, this.posX, this.posY + 30, LEFT, "BB", scaleList);
+                        }
+
                     } else {
                         this.posX = mouseX;
                         this.posY = mouseY;
-                        MODI.DISEGNO.text(mouseLayer, this.posX, this.posY, CENTER, "BB", this.placeHolder);
+                        MODI.DISEGNO.text(mouseLayer, textSize, this.posX, this.posY, CENTER, "BB", this.placeHolder);
                     }
                 }
             }
@@ -409,13 +506,13 @@ const MODI = {
             mouseLayer.noStroke();
             MODI.DISEGNO.TIPO[tool].mouseEffect();
         },
-        text(layer, posX, posY, alignH, opacity, content) {
+        text(layer, size, posX, posY, alignH, opacity, content) {
             layer.noStroke();
             layer.fill(colore_matita.value + opacity);
             layer.textAlign(alignH, CENTER);
             layer.textStyle(BOLD);
             layer.textFont("Cursive");
-            layer.textSize(25);
+            layer.textSize(size);
             layer.text(content, posX, posY + 5);
         }
     }
@@ -542,7 +639,16 @@ const AZIONI = {
             SHORTCUT: 80,                       // Tasto P
             saveImage() {
                 const data = new Date().toISOString().slice(0, 10);
-                saveCanvas(cvs, 'MinecraftSketch_' + data, 'png');
+                if (keyIsPressed && keyCode == 16) {
+                    app.togglePrintMode(true);
+                    redraw();
+                    saveCanvas(cvs, 'MinecraftSketch_' + data + "_PRINT", 'png');
+                    app.togglePrintMode(false);
+                } else if (printMode) {
+                    saveCanvas(cvs, 'MinecraftSketch_' + data + "_PRINT", 'png');
+                } else {
+                    saveCanvas(cvs, 'MinecraftSketch_' + data, 'png');
+                }
             }
         }
     }

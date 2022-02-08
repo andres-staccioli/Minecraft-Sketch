@@ -1,3 +1,6 @@
+/* Minecraft Sketch - Version 0.4 (03-Dec-2021) by Andrés Staccioli */
+/* Last Update style.css: 08-Feb-2021 */
+
 * {
     box-sizing: border-box;
     margin: 0;
@@ -8,7 +11,8 @@ body {
     background: #111;
     font-family: Arial, Helvetica, sans-serif;
     font-size: 18px;
-    overflow: hidden;
+    /* overflow: hidden; */
+    overflow: visible;
 }
 
 ul {
@@ -17,14 +21,13 @@ ul {
     margin: 0;
 }
 
-header {
-    display: flex;
-}
-
 nav {
     height: 55px;
-    width: 1055px;
+    display: flex;
+    /* width: 1055px; */
     padding-left: 15px;
+    /* position: fixed;
+    top: 0px; */
 }
 
 nav, nav ul {
@@ -101,28 +104,66 @@ ul li button {
 footer {
     background: #000;
     color: #AAA;
-    font-size: 14px;
-    padding: 15px;
+    font-size: 15px;
+    padding: 15px 50px 15px 15px;
     margin-top: 10px;
-    width: 1055px;
+    width: 100%;
+    height: 45px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    position: fixed;
+    bottom: 10px;
+}
+
+#current_sizes {
+    font-size: 15px;
+    color: #888;
 }
 
 #precedenti {
-    font-size: 12px;
+    font-size: 15px;
     color: #AAA;
-    float: right;
 }
 
-#precedenti a{
+#precedenti a {
     /* cursor: pointer; */
     text-decoration: underline;
     color: #AAA;
+}
+
+/* SCROLLS */
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #888;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+#canvas_container {
+    display: block;
+    overflow: auto;
+    max-height: 80vh;
+    /* max-width: calc("100vw - 185px"); */
 }
 
 #canvas {
     padding: 5px;
     padding-bottom: 0px;
     background: rgb(20, 40, 20);
+    margin: auto;
+    margin-bottom: auto;
     /* cursor: url('cursors/arrow_1.cur'), auto; */
 }
 
@@ -255,21 +296,22 @@ footer {
 }
 
 #left-menu {
-    width: 175px;
-    height: 490px;
+    width: 190px;
+    height: 590px;
     background: #000;
     margin-right: 10px;
     margin-left: 10px;
     display: grid;
-    grid-template-rows: 175px 30px 175px 40px;
+    grid-template-rows: 28px 175px 28px 175px 28px 28px;
     grid-gap: 20px;
     /* flex-direction: column; */
     justify-content: top left;
     font-size: 13px;
-    padding-top: 7px;
-    padding-bottom: 7px;
-    padding-left: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 26px;
     list-style-type: none;
+    /* max-height: calc(100% - 120px); */
 }
 
 .section {
@@ -285,7 +327,7 @@ footer {
     justify-content: left;
     text-align: left;
     display: inline-block;
-    width: 160px;
+    width: 170px;
     background-color: #1e3c1e;
     border-radius: 7px;
     padding: 10px;
@@ -293,7 +335,7 @@ footer {
     padding-top: 11px;
     padding-left: 15px;
     margin-bottom: 8px;
-    margin-left: -12px;
+    margin-left: -16px;
     margin-right: -5px;
     font-weight: bold;
 }
@@ -306,6 +348,54 @@ footer {
     margin-left: 5px;
     margin-top: -3px;
     background-color: #DDDDDD;
+}
+
+.scales {
+    margin-top: -4.5px;
+    text-align: center;
+    align-items: center;
+}
+
+.scale_input {
+    display: none;
+}
+
+.scale_label {
+    background-color: rgb(30, 60, 30);
+    width: 19px;
+    height: 21px;
+    padding: 2px 0px;
+    margin-top: -0.5px;
+    cursor: pointer;
+    line-height: 19px;
+    font-size: 12px;
+    color: rgb(80, 100, 80);
+}
+
+.scale_label:not(:last-of-type) {
+    border-right: 1px;
+}
+
+.scale_label:hover {
+    color: rgb(220, 220, 220);
+    margin-top: 0px;
+    font-size: 14px;
+}
+
+.scale_input:checked+.scale_label {
+    width: 23px;
+    height: 23px;
+    line-height: 21px;
+    font-size: 14px;
+    margin-top: 0px;
+    padding: 0px 0px;
+    color: white;
+    border: 2px solid rgba(200, 180, 32);
+    border-radius: 10%;
+}
+
+.scale_input:checked+.scale_label:hover {
+    cursor: default;
 }
 
 .section_title_buttons button:hover {
@@ -418,8 +508,8 @@ button img {
 /* ------------------- */
 
 #aiuto-info, #contatto-info {
-    width: 850px;
-    height: 490px;
+    margin: 1rem;
+    height: 80vh;
     overflow: auto;
     padding: 35px;
     padding-right: 65px;
@@ -472,6 +562,12 @@ button img {
     font-weight: bold;
     color: rgb(200, 180, 32);
     line-height: 20px;
+}
+
+.extra{
+    font-size: 17px;
+    font-weight: bold;
+    color: rgb(200, 180, 32);
 }
 
 #aiuto-info .freccia {

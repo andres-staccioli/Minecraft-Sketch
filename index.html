@@ -1,17 +1,21 @@
+<!-- Minecraft Sketch - Version 0.4 (03-Dec-2021) by Andrés Staccioli -->
+<!-- Last Update index.html: 08-Feb-2021 -->
+
 <!DOCTYPE html>
 <html class="no-js">
 
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Minecraft Sketch (v0.3)</title>
+    <title>Minecraft Sketch (v0.4)</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="favicon.png" sizes="32x32" type="image/png">
+    <link rel="icon" href="images/favicon.png" sizes="32x32" type="image/png">
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
         integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ=" crossorigin="anonymous" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/addons/p5.sound.js"></script>
 </head>
 
 <body>
@@ -24,9 +28,6 @@
                         <i class="fas fa-edit"></i>Sketch
                     </li>
                 </a>
-                <!-- <a href="#"><li>
-                    <i class="fas fa-play-circle"></i>Demo
-                </li></a> -->
                 <a href="aiuto.html">
                     <li>
                         <i class="fas fa-question-circle"></i>Aiuto
@@ -47,10 +48,29 @@
     </header>
     <div id="app">
         <div id="left-menu">
+            <div class="section" id="grid">
+                <div class="section_title_bar" id="section_bar_grid">
+                    <div class="section_title_text">
+                        SCALA
+                    </div>
+                    <div class="section_title_buttons scales">
+                        <input class="scale_input" type="radio" value="20" name="Scale" id="scale_20">
+                        <label class="scale_label" title="Impostare Scala a 20 pixel per blocco" for="scale_20" onclick="app.newScale(20, true)">20</label>
+                        <input class="scale_input" type="radio" value="30" name="Scale" id="scale_30">
+                        <label class="scale_label" title="Impostare Scala a 30 pixel per blocco" for="scale_30" onclick="app.newScale(30, true)">30</label>
+                        <input class="scale_input" type="radio" value="40" name="Scale" id="scale_40" checked="true">
+                        <label class="scale_label" title="Impostare Scala a 40 pixel per blocco" for="scale_40" onclick="app.newScale(40, true)">40</label>
+                        <input class="scale_input" type="radio" value="50" name="Scale" id="scale_50">
+                        <label class="scale_label" title="Impostare Scala a 50 pixel per blocco" for="scale_50" onclick="app.newScale(50, true)">50</label>
+                        <input class="scale_input" type="radio" value="60" name="Scale" id="scale_60">
+                        <label class="scale_label" title="Impostare Scala a 60 pixel per blocco" for="scale_60" onclick="app.newScale(60, true)">60</label>
+                    </div>
+                </div>
+            </div>
             <div class="section" id="blocks">
                 <div class="section_title_bar" id="section_bar_blocks">
                     <div class="section_title_text">
-                        BLOCCHI
+                        BLOCCHI</button>
                     </div>
                     <div class="section_title_buttons">
                         <button id="blocks_delete" title="Cancellare Blocchi" onclick="app.clearLayer('blocchi')"><i
@@ -158,11 +178,6 @@
                                     onchange="AZIONI.COLORI_MATITA.updateTool()">
                             </button>
                         </div>
-                        <!-- <div>
-                            <button class="draw_general" id="draw_snap" title="Agganciare ai Blocchi"
-                                onclick="app.snapToBlocks = !app.snapToBlocks"><i class="fas fa-magnet"></i></button>
-
-                        </div> -->
                         <div>
                             <button class="draw_general" id="draw_delete" title="Cancellare Disegno"
                                 onclick="app.clearLayer('disegno')"><i class="fas fa-trash-alt"></i></button>
@@ -258,20 +273,35 @@
                     </div>
                 </div>
             </div>
+            <div class="section" id="copy_code">
+                <div class="section_title_bar" id="section_bar_code">
+                    <div class="section_title_text">
+                        COPIARE CODICE
+                    </div>
+                    <div class="section_title_buttons">
+                        <button title="Copiare codice JavaScript per Minecraft Education Edition" id="btn_code" onclick="exportCode()">
+                            <i class="fab fa-js"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div id="canvas">
+        <div id="canvas_container">
+            <div id="canvas"></div>
         </div>
     </div>
 
     <footer>
-        Minecraft Sketch v0.3 - Creato da Andrés Staccioli
+        <div id="current_version">Minecraft Sketch v0.4 - Creato da Andrés Staccioli</div>
+        <div id="current_sizes"></div>
         <div id="precedenti">Versione precedente:
-            <a href="v_0-2/" target="_blank">Minecraft Sketch v0.2</a>
+            <a href="v_0-3/" target="_blank">Minecraft Sketch v0.3</a>
         </div>
     </footer>
     <script src="app.js"></script>
     <script src="tools.js"></script>
     <script src="script.js"></script>
+    <script src="export.js"></script>
 </body>
 
 </html>

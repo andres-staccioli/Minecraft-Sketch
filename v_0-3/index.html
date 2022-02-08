@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html class="no-js">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Minecraft Sketch (v0.3)</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="images/favicon.png" sizes="32x32" type="image/png">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css"
+        integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div><img src="images/minecraft-sketch.png" alt="Logo Minecraft Sketch" id="logo"></div>
+            <ul>
+                <a href="https://andres-staccioli.github.io/Minecraft-Sketch/v_0-3/">
+                    <li>
+                        <i class="fas fa-edit"></i>Sketch
+                    </li>
+                </a>
+                <a href="aiuto.html">
+                    <li>
+                        <i class="fas fa-question-circle"></i>Aiuto
+                    </li>
+                </a>
+                <a href="contatto.html">
+                    <li>
+                        <i class="fas fa-paper-plane"></i>Contatto
+                    </li>
+                </a>
+                <a href="https://minecraft.makecode.com/" target="_blank">
+                    <li>
+                        <i class="fas fa-code"></i>MakeCode
+                    </li>
+                </a>
+            </ul>
+        </nav>
+    </header>
+    <div id="app">
+        <div id="left-menu">
+            <div class="section" id="blocks">
+                <div class="section_title_bar" id="section_bar_blocks">
+                    <div class="section_title_text">
+                        BLOCCHI
+                    </div>
+                    <div class="section_title_buttons">
+                        <button id="blocks_delete" title="Cancellare Blocchi" onclick="app.clearLayer('blocchi')"><i
+                                class="fas fa-trash-alt"></i></button>
+                    </div>
+                </div>
+                <div>
+                    <button class="block_color" id="block_vuoto" title="Blocco Vuoto (Q)"
+                        onclick="app.setTool('VUOTO')"></button>
+                </div>
+                <div>
+                    <button class="block_color" id="block_progettato" title="Blocco Progettato (1)"
+                        onclick="app.setTool('PROGETTATO')"></button>
+                </div>
+                <div>
+                    <button class="block_color" id="block_piazzato" title="Blocco Marrone (2)"
+                        onclick="app.setTool('PIAZZATO')"></button>
+                </div>
+                <div>
+                    <button class="block_color" id="block_bianco" title="Blocco Bianco (3)"
+                        onclick="app.setTool('BIANCO')"></button>
+                </div>
+                <div>
+                    <button class="block_color" id="block_rosso" title="Blocco Rosso (4)"
+                        onclick="app.setTool('ROSSO')"></button>
+                </div>
+                <div>
+                    <button class="block_color" id="block_verde" title="Blocco Verde (5)"
+                        onclick="app.setTool('VERDE')"></button>
+                </div>
+                <div>
+                    <button class="block_color" id="block_blu" title="Blocco Blu (6)"
+                        onclick="app.setTool('BLU')"></button>
+                </div>
+                <div>
+                    <button class="block_color" id="block_grigio" title="Blocco Grigio (7)"
+                        onclick="app.setTool('GRIGIO')"></button>
+                </div>
+                <div>
+                    <button class="block_color" id="block_giallo" title="Blocco Giallo (8)"
+                        onclick="app.setTool('GIALLO')"></button>
+                </div>
+                <div>
+                    <button class="block_color" id="block_viola" title="Blocco Viola (9)"
+                        onclick="app.setTool('VIOLA')"></button>
+                </div>
+                <div>
+                    <button class="block_color" id="block_arancione" title="Blocco Arancione (0)"
+                        onclick="app.setTool('ARANCIONE')"></button>
+                </div>
+                <div>
+                    <button class="block_color" id="block_nero" title="Blocco Nero (U)"
+                        onclick="app.setTool('NERO')"></button>
+                </div>
+                <div>
+                    <button class="block_tool" id="block_tool_porta" title="Blocco con Porta (H)"
+                        onclick="app.setTool('PORTA')"><img src="images/porta.png" alt="porta"></button>
+                </div>
+                <div>
+                    <button class="block_tool" id="block_tool_lastra" title="Blocco con Lastra (J)"
+                        onclick="app.setTool('LASTRA')"><img src="images/lastra.png" alt="lastra"></button>
+                </div>
+                <div>
+                    <button class="block_tool" id="block_tool_pianta" title="Blocco con Pianta (K)"
+                        onclick="app.setTool('PIANTA')"><img src="images/pianta.png" alt="pianta"></button>
+                </div>
+                <div>
+                    <button class="block_tool" id="block_tool_semi" title="Blocco con Semi (L)"
+                        onclick="app.setTool('SEMI')"><img src="images/semi.png" alt="semi"></button>
+                </div>
+            </div>
+            <div class="section" id="agent">
+                <div class="section_title_bar" id="section_bar_agent">
+                    <div class="section_title_text">
+                        AGENT
+                    </div>
+                    <div class="section_title_buttons">
+                        <div>
+                            <button class="agent_tool" id="agent_tool_1" title="Spostare Agent (A)"
+                                onclick="app.setTool('AGENT')"><i class="fas fa-arrows-alt"></i>
+                            </button>
+                        </div>
+                        <div>
+                            <button class="agent_tool" id="agent_tool_2"
+                                title="Svoltare Agent a Sinistra (Freccia Sinistra)"
+                                onclick="AZIONI.AGENT.TURN_LEFT.turnLeft()"><i class="fas fa-undo-alt"></i></button>
+                        </div>
+                        <div>
+                            <button class="agent_tool" id="agent_tool_3"
+                                title="Svoltare Agent a Destra (Freccia Destra)"
+                                onclick="AZIONI.AGENT.TURN_RIGHT.turnRight()"><i class="fas fa-redo-alt"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="section" id="draw">
+                <div class="section_title_bar" id="section_bar_draw">
+                    <div class="section_title_text">
+                        DISEGNO
+                    </div>
+                    <div class="section_title_buttons">
+                        <div>
+                            <button>
+                                <input id="colore_matita" type="color" name="favcolor" value="#4040FF"
+                                    onchange="AZIONI.COLORI_MATITA.updateTool()">
+                            </button>
+                        </div>
+                        <!-- <div>
+                            <button class="draw_general" id="draw_snap" title="Agganciare ai Blocchi"
+                                onclick="app.snapToBlocks = !app.snapToBlocks"><i class="fas fa-magnet"></i></button>
+
+                        </div> -->
+                        <div>
+                            <button class="draw_general" id="draw_delete" title="Cancellare Disegno"
+                                onclick="app.clearLayer('disegno')"><i class="fas fa-trash-alt"></i></button>
+
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <button class="draw_color" id="draw_color_rosso" title="Disegno Rosso (Z)"
+                        onclick="AZIONI.COLORI_MATITA.ROSSO.setCol()"></button>
+                </div>
+                <div>
+                    <button class="draw_color" id="draw_color_verde" title="Disegno Verde (X)"
+                        onclick="AZIONI.COLORI_MATITA.VERDE.setCol()"></button>
+                </div>
+                <div>
+                    <button class="draw_color" id="draw_color_blu" title="Disegno Blu (C)"
+                        onclick="AZIONI.COLORI_MATITA.BLU.setCol()"></button>
+                </div>
+                <div>
+                    <button class="draw_color" id="draw_color_marrone" title="Disegno Bianco (V)"
+                        onclick="AZIONI.COLORI_MATITA.MARRONE.setCol()"></button>
+                </div>
+                <div>
+                    <button class="draw_color" id="draw_color_giallo" title="Disegno Giallo (B)"
+                        onclick="AZIONI.COLORI_MATITA.GIALLO.setCol()"></button>
+                </div>
+                <div>
+                    <button class="draw_color" id="draw_color_viola" title="Disegno Viola (N)"
+                        onclick="AZIONI.COLORI_MATITA.VIOLA.setCol()"></button>
+                </div>
+                <div>
+                    <button class="draw_color" id="draw_color_arancione" title="Disegno Arancione (M)"
+                        onclick="AZIONI.COLORI_MATITA.ARANCIONE.setCol()"></button>
+                </div>
+                <div>
+                    <button class="draw_color" id="draw_color_bianco" title="Disegno Grigio (,)"
+                        onclick="AZIONI.COLORI_MATITA.BIANCO.setCol()"></button>
+                </div>
+                <div>
+                    <button class="draw_tool" id="draw_tool_matita" title="Matita (E)" onclick="app.setTool('MATITA')">
+                        <i class="fas fa-signature"></i>
+                    </button>
+                </div>
+                <div>
+                    <button class="draw_tool" id="draw_tool_gomma" title="Gomma (R)" onclick="app.setTool('GOMMA')">
+                        <img src="images/gomma.png" alt="gomma">
+                    </button>
+                </div>
+                <div>
+                    <button class="draw_tool" id="draw_tool_numeri" title="Numeri (Y)" onclick="app.setTool('NUMERI')">
+                        <img src="images/numeri.png" alt="numeri">
+                    </button>
+                </div>
+                <div>
+                    <button class="draw_tool" id="draw_tool_testo" title="Testo (T)" onclick="app.setTool('TESTO')">
+                        <img src="images/testo.png" alt="testo">
+                    </button>
+                </div>
+                <div>
+                    <button class="draw_tool" id="draw_tool_freccia" title="Freccia (F)"
+                        onclick="app.setTool('FRECCIA')">
+                        <img src="images/freccia.png" alt="freccia">
+                    </button>
+                </div>
+                <div>
+                    <button class="draw_tool" id="draw_tool_quota" title="Quota (G)" onclick="app.setTool('QUOTA')">
+                        <img src="images/quota.png" alt="quota">
+                    </button>
+                </div>
+                <div>
+                    <button class="draw_tool" id="draw_tool_agent-inizio" title="Agent Inizio (I)"
+                        onclick="AZIONI.TIMBRO.INIZIO.timbroInizio(agentInizio)">
+                        <img src="images/agent-freccia_verde.png" alt="agent-freccia_verde">
+                    </button>
+                </div>
+                <div>
+                    <button class="draw_tool" id="draw_tool_agent-fine" title="Agent Fine (O)"
+                        onclick="AZIONI.TIMBRO.FINE.timbroFine(agentFine)">
+                        <img src="images/agent-freccia_rosso.png" alt="agent-freccia_rossa">
+                    </button>
+                </div>
+            </div>
+            <div class="section" id="save_canvas">
+                <div class="section_title_bar" id="section_bar_agent">
+                    <div class="section_title_text">
+                        SCARICARE
+                    </div>
+                    <div class="section_title_buttons">
+                        <button title="Salvare Sketch (P)" id="btn_salva" onclick="AZIONI.SAVE.IMAGE.saveImage()">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="canvas">
+        </div>
+    </div>
+
+    <footer>
+        Minecraft Sketch v0.3 - Creato da Andrés Staccioli
+        <div id="precedenti">Versione precedente:
+            <a href="https://andres-staccioli.github.io/Minecraft-Sketch/v_0-2/" target="_blank">Minecraft Sketch v0.2</a>
+        </div>
+    </footer>
+    <script src="app.js"></script>
+    <script src="tools.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,3 +1,6 @@
+// Minecraft Sketch - Version 0.4 (03-Dec-2021) by Andrés Staccioli
+// Last Update app.js: 03-Dec-2021
+
 class App {
     constructor(defaultLayer, defaultTool) {
         this.currentLayer = defaultLayer;
@@ -6,6 +9,110 @@ class App {
         this.previousTool = defaultTool;
         this.lastBlockColor = MODI.BLOCCO.TIPO[defaultTool].STROKE_COLOR;
         this.mouseEffect = true;        // Mouse hover effect on blocks
+    }
+
+    newBlocks() {
+        blocchi.splice(0, blocchi.length);
+        let totalBlocks = 0;
+
+        for (let y = 1; y < height; y += scala) {
+            for (let x = 1; x < width; x += scala) {
+                totalBlocks++;
+            }
+        }
+
+        for (let y = 1; y < height; y += scala) {
+            for (let x = 1; x < width; x += scala) {
+                blocchi.push(new Blocco(x, y));
+            }
+        }
+        agent = new Agent(blocchi[0].x, blocchi[0].y);
+        for (let b of blocchi) {
+            b.show();
+        }
+    }
+
+    newCanvas(updateType, newWidth, newHeight) {          // Types: blocchi, fullsizeCanvas, fixedCanvas
+        let remainderWidth, remainderHeight;
+        let settings = document.getElementById('current_sizes');
+        switch (updateType) {
+            case "blocchi":
+                width = newWidth * scala;
+                height = newHeight * scala;
+                break;
+            case "fullsizeCanvas":
+                remainderWidth = (window.innerWidth - 220) % scala;
+                remainderHeight = (window.innerHeight - 160) % scala;
+                width = (window.innerWidth - 220) - remainderWidth;
+                height = (window.innerHeight - 160) - remainderHeight;
+                break;
+            case "fixedCanvas":
+                remainderWidth = newWidth % scala;
+                remainderHeight = newHeight % scala;
+                width = newWidth - remainderWidth;
+                height = newHeight - remainderHeight;
+                break;
+        }
+
+        if (width < minWidth) {
+            app.newCanvas("fixedCanvas", width + scala, height);
+            return;
+        } else if (height < minHeight) {
+            app.newCanvas("fixedCanvas", width, height + scala);
+            return;
+        }
+
+        settings.innerText = "Scala: " + scala + " — Blocchi: " + (width / scala) + " x " + (height / scala) + " — Canvas: " + width + " x " + height;
+        cvs = createCanvas(width, height);
+        cvs.parent('canvas');
+        pixelDensity(1);
+        blocksLayer = createGraphics(width, height);
+        disegno = createGraphics(width, height);
+        mouseLayer = createGraphics(width, height);
+        mouseLayer.noStroke();
+        disegno.strokeCap(ROUND);
+        disegno.strokeJoin(ROUND);
+        mouseLayer.strokeCap(ROUND);
+        mouseLayer.strokeJoin(ROUND);
+        app.newBlocks();
+    }
+
+    newScale(inputScale, isFixed) {
+        if (inputScale == scala) {
+            return;
+        }
+        if (scaleList.includes(inputScale)) {
+            document.getElementById(`scale_${inputScale}`).checked = true;
+        }
+        const warning = "Cambiare la scala dei blocchi cancellerà lo sketch attuale. Procediamo?";
+        // if (scaleList.includes(inputScale)) {
+        if (confirm(warning)) {
+            if (isFixed) {
+                if (inputScale != scala && inputScale >= minScale && inputScale <= maxScale) {
+                    scala = inputScale;
+                    app.newCanvas("fullsizeCanvas");
+                }
+            } else {
+                scala += inputScale;
+                scala = constrain(scala, minScale, maxScale);
+                app.newCanvas("fullsizeCanvas");
+            }
+        }
+        // }
+    }
+
+    togglePrintMode(status) {
+        printMode = status;
+        for (let b of blocchi) {
+            for (let i = 0; i < 7; i++) {
+                b.show();
+            }
+        }
+        for (let b of blocchi) {
+            if (b.status != 'VUOTO') {
+                b.show();
+            }
+        }
     }
 
     setTool(newTool) {
@@ -42,6 +149,8 @@ class App {
             for (let b of blocchi) {
                 b.status = "VUOTO";
                 b.draw.clear();
+                b.tnt = false;
+                b.show();
             }
         } else if (layer == "disegno") {
             disegno.erase();
@@ -82,6 +191,89 @@ class App {
             }
         }
     }
+
+    boom() {
+        let tnt = [];
+
+        function randomness1(i) {
+            let random_blocks = [
+                [i - 2 * (width / scala), i - 2 * (width / scala) - 1, i - 2 * (width / scala) + 1, i + 2 * (width / scala), i + 2 * (width / scala) - 1, i + 2 * (width / scala) + 1, i - 2, i - 2 - width / scala, i - 2 + width / scala, i + 2, i + 2 - width / scala, i + 2 + width / scala],
+                [],
+            ];
+            return random_blocks[0];
+        }
+
+        function randomness2(i) {
+            let random_blocks = [
+                [i - 3 * (width / scala), i - 3 * (width / scala) - 1, i - 3 * (width / scala) + 1, i + 3 * (width / scala), i + 3 * (width / scala) - 1, i + 3 * (width / scala) + 1, i - 3, i - 3 - width / scala, i - 3 + width / scala, i + 3, i + 3 - width / scala, i + 3 + width / scala, i - 2 * (width / scala) - 2, i - 2 * (width / scala) + 2, i + 2 * (width / scala) - 2, i + 2 * (width / scala) + 2],
+                [],
+            ];
+            return random_blocks[0];
+        }
+
+        for (let i = 0; i < blocchi.length; i++) {
+            if (blocchi[i].tnt) {
+                tnt.push(i);
+            }
+            blocchi[i].tnt = false;
+        }
+
+        if (tnt.length > 0) {
+            tntSound.amp(0.2);
+            tntSound.play();
+        }
+
+        for (let t of tnt) {
+            let explode1 = [];
+            let explode2 = [];
+
+            explode1.push(t);
+            explode1.push(t + 1);                   // RIGHT BLOCK
+            explode1.push(t - 1);                   // LEFT BLOCK
+            explode1.push(t - (width / scala));     // TOP BLOCK
+            explode1.push(t + (width / scala));     // BOTTOM BLOCK
+
+            explode1.push(t - (width / scala) - 1);     // TOP-LEFT BLOCK
+            explode1.push(t - (width / scala) + 1);     // TOP-RIGHT BLOCK
+            explode1.push(t + (width / scala) - 1);     // BOTTOM-LEFT BLOCK
+            explode1.push(t + (width / scala) + 1);     // BOTTOM-RIGHT BLOCK
+
+            for (let r of randomness1(t)) {
+                explode1.push(r);
+            }
+
+            for (let r of randomness2(t)) {
+                explode2.push(r);
+            }
+
+            for (let e1 of explode1) {
+                if (e1 >= 0 && e1 < blocchi.length && dist(blocchi[e1].x, blocchi[e1].y, blocchi[t].x, blocchi[t].y) <= scala * 4) {
+                    blocchi[e1].status = 'GRIGIO';
+                    blocchi[e1].draw.clear();
+                    blocchi[e1].show();
+                    disegno.erase();
+                    disegno.rect(blocchi[e1].x, blocchi[e1].y, scala, scala);
+                    disegno.noErase();
+                }
+            }
+
+            for (let e2 of explode2) {
+                if (e2 >= 0 && e2 < blocchi.length && dist(blocchi[e2].x, blocchi[e2].y, blocchi[t].x, blocchi[t].y) <= scala * 4) {
+                    if (blocchi[e2].status != 'GRIGIO') {
+                        blocchi[e2].status = 'PIAZZATO';
+                    }
+                    blocchi[e2].draw.clear();
+                    blocchi[e2].show();
+                    disegno.erase();
+                    disegno.fill(255);
+                    disegno.rect(blocchi[e2].x, blocchi[e2].y, scala, scala);
+                    disegno.fill(0, 127);
+                    disegno.rect(blocchi[e2].x - scala, blocchi[e2].y - scala, scala * 3, scala * 3);
+                    disegno.noErase();
+                }
+            }
+        }
+    }
 }
 
 
@@ -93,45 +285,75 @@ class Blocco {
         this.draw = createGraphics(scala, scala);
         this.drawRotation = 0;
         this.drawTint = app.lastBlockColor;
+        this.tnt = false;
     }
 
     show() {
-        strokeWeight(2);
-        fill(MODI.BLOCCO.TIPO[this.status].FILL_COLOR[0], MODI.BLOCCO.TIPO[this.status].FILL_COLOR[1], MODI.BLOCCO.TIPO[this.status].FILL_COLOR[2]);
-        stroke(MODI.BLOCCO.TIPO[this.status].STROKE_COLOR[0], MODI.BLOCCO.TIPO[this.status].STROKE_COLOR[1], MODI.BLOCCO.TIPO[this.status].STROKE_COLOR[2]);
-        rect(this.x, this.y, scala - 2, scala - 2);
-        push();
-        tint(this.drawTint);
-        image(this.draw, this.x + scala / 2, this.y + scala / 2);
-        pop();
+        blocksLayer.strokeWeight(2);
+        blocksLayer.fill(MODI.BLOCCO.TIPO[this.status].FILL_COLOR[0], MODI.BLOCCO.TIPO[this.status].FILL_COLOR[1], MODI.BLOCCO.TIPO[this.status].FILL_COLOR[2]);
+        blocksLayer.stroke(MODI.BLOCCO.TIPO[this.status].STROKE_COLOR[0], MODI.BLOCCO.TIPO[this.status].STROKE_COLOR[1], MODI.BLOCCO.TIPO[this.status].STROKE_COLOR[2]);
+
+        if (printMode) {
+            if (this.status == 'VUOTO') {
+                blocksLayer.fill(255);
+                blocksLayer.stroke(255);
+                blocksLayer.strokeWeight(0.5);
+            } else if (this.status == 'PROGETTATO') {
+                blocksLayer.fill(200);
+                blocksLayer.stroke(127);
+                blocksLayer.strokeWeight(4);
+            } else {
+                blocksLayer.fill(100);
+                blocksLayer.stroke(0);
+                blocksLayer.strokeWeight(4);
+            }
+
+        }
+        blocksLayer.rect(this.x, this.y, scala - 2, scala - 2);
+        blocksLayer.push();
+        blocksLayer.tint(this.drawTint);
+        if (printMode) {
+            blocksLayer.tint(127);
+        }
+        blocksLayer.image(this.draw, this.x, this.y);
+        blocksLayer.pop();
     }
 
     click() {
-        if (mouseX >= this.x && mouseX < this.x + scala && mouseY >= this.y && mouseY < this.y + scala) {
-            if (app.currentTool == 'AGENT') {
-                agent.x = this.x;
-                agent.y = this.y;
-            } else if (["PORTA", "LASTRA", "PIANTA", "SEMI"].includes(app.currentTool)) {
-                this.drawTint = app.lastBlockColor;
-                this.draw.clear();
-                this.draw.imageMode(CENTER);
-                this.draw.angleMode(DEGREES);
-                this.draw.push();
-                this.draw.translate(scala / 2 - 1, scala / 2 - 1);
-                this.draw.rotate(MODI.BLOCCO.TIPO[app.currentTool].DIRECTION);
-                this.draw.image(IMAGES[app.currentTool], 0, 0, scala - 4, scala - 4);
-                this.draw.pop();
+        if (app.currentTool == 'AGENT') {
+            agent.x = this.x;
+            agent.y = this.y;
+        } else if (["PORTA", "LASTRA", "PIANTA", "SEMI", "TNT"].includes(app.currentTool)) {
+            if (app.currentTool == "TNT") {
+                this.drawTint = 255;
+                this.tnt = true;
             } else {
-                this.status = app.currentTool;
-                this.draw.clear();
+                this.drawTint = app.lastBlockColor;
+                this.tnt = false;
             }
+            this.draw.clear();
+            this.draw.imageMode(CENTER);
+            this.draw.angleMode(DEGREES);
+            this.draw.push();
+            this.draw.translate(scala / 2 - 1, scala / 2 - 1);
+            this.draw.rotate(MODI.BLOCCO.TIPO[app.currentTool].DIRECTION);
+            this.draw.image(IMAGES[app.currentTool], 0, 0, scala - 4, scala - 4);
+            this.draw.pop();
+        } else {
+            this.status = app.currentTool;
+            this.tnt = false;
+            this.draw.clear();
         }
     }
 
     mouseEffect(isStamp) {
         if (app.mouseEffect && mouseX >= this.x && mouseX < this.x + scala && mouseY >= this.y && mouseY < this.y + scala) {
             if (isStamp) {
-                mouseLayer.tint(app.lastBlockColor[0], app.lastBlockColor[1], app.lastBlockColor[2], 127);
+                if (app.currentTool == "TNT") {
+                    mouseLayer.tint(255, 127);
+                } else {
+                    mouseLayer.tint(app.lastBlockColor[0], app.lastBlockColor[1], app.lastBlockColor[2], 127);
+                }
                 mouseLayer.push();
                 mouseLayer.translate(this.x + scala / 2 - 1, this.y + scala / 2 - 1);
                 mouseLayer.imageMode(CENTER);
